@@ -46,7 +46,7 @@ object RecognizeActivity {
           var intervals = defineWindows(times)
 
           intervals.foreach(interval => {
-            for (j <- 0 to interval(2)) {
+            for (j <- 0 to interval(2).toInt) {
               var data = cassandraRowsRDD.select("timestamp", "acc_x", "acc_y", "acc_z")
                 .where("user_id=? AND activity=? AND timestamp < ? AND timestamp > ?", i,
                   activity, interval(1) + j * 5000000000L, interval(1) + (j - 1) * 5000000000L)
@@ -112,7 +112,7 @@ object RecognizeActivity {
       val errorDT = new DecisionTrees(trainingData, testData).createModel(sc)
 
       // With Random Forest
-      val errorRF = new RandomForests(trainingData, testData).createModel(sc)
+      val errorRF = new RandomForests(trainingData, testData).createModel
 
       println("sample size " + data.count());
       println("Test Error Decision Tree: " + errorDT);
